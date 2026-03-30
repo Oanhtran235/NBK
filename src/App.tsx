@@ -45,6 +45,7 @@ export default function App() {
   const [filterCategory, setFilterCategory] = useState<Category | 'All'>('All');
   const [selectedAddress, setSelectedAddress] = useState<HumanitarianAddress | null>(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [displayLimit, setDisplayLimit] = useState(25);
 
   const stats = useMemo(() => getStats(), []);
   const supporters = useMemo(() => getSupporters(), []);
@@ -273,13 +274,14 @@ export default function App() {
                         <th className="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Họ và tên</th>
                         <th className="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Lớp</th>
                         <th className="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Phân loại</th>
+                        <th className="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Địa chỉ</th>
                         <th className="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Nhu cầu</th>
                         <th className="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Trạng thái</th>
                         <th className="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider text-right">Thao tác</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100">
-                      {filteredAddresses.slice(0, 15).map((addr) => (
+                      {filteredAddresses.slice(0, displayLimit).map((addr) => (
                         <tr 
                           key={addr.id} 
                           className="hover:bg-slate-50 transition-colors cursor-pointer"
@@ -299,6 +301,9 @@ export default function App() {
                             )}>
                               {addr.category}
                             </span>
+                          </td>
+                          <td className="px-6 py-4 text-xs text-slate-500 max-w-[200px] truncate">
+                            {addr.address}
                           </td>
                           <td className="px-6 py-4">
                             <div className="flex gap-1 flex-wrap">
@@ -321,12 +326,18 @@ export default function App() {
                       ))}
                     </tbody>
                   </table>
-                  <div className="p-4 border-t border-slate-100 flex justify-between items-center text-sm text-slate-500">
-                    <span>Hiển thị 15 trên {filteredAddresses.length} kết quả</span>
-                    <div className="flex gap-2">
-                      <button className="px-3 py-1 border border-slate-200 rounded hover:bg-slate-50">Trước</button>
-                      <button className="px-3 py-1 border border-slate-200 rounded hover:bg-slate-50">Sau</button>
-                    </div>
+                  <div className="p-6 border-t border-slate-100 flex flex-col items-center gap-4">
+                    <p className="text-sm text-slate-500 font-medium">
+                      Đang hiển thị <span className="text-slate-900 font-bold">{Math.min(displayLimit, filteredAddresses.length)}</span> trên tổng số <span className="text-slate-900 font-bold">{filteredAddresses.length}</span> học sinh
+                    </p>
+                    {displayLimit < filteredAddresses.length && (
+                      <button 
+                        onClick={() => setDisplayLimit(prev => prev + 25)}
+                        className="px-8 py-2.5 bg-blue-600 text-white rounded-xl text-sm font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-100 flex items-center gap-2"
+                      >
+                        <Plus size={18} /> Xem thêm học sinh
+                      </button>
+                    )}
                   </div>
                 </div>
               </motion.div>
