@@ -172,12 +172,15 @@ export const mockAddresses: HumanitarianAddress[] = Array.from({ length: 249 }, 
     }
   }
 
+  const locations = ['ĐA Quyn', 'Tà Năng', 'Tà Hine', 'Ninh Loan', 'Đà Loan'];
+  const location = locations[Math.floor(Math.random() * locations.length)];
+
   return {
     id,
     name,
     studentClass,
     category,
-    address: `Thôn ${Math.floor(Math.random() * 5) + 1}, Xã Tà Hine, Huyện Đức Trọng, Tỉnh Lâm Đồng`,
+    address: `Thôn ${Math.floor(Math.random() * 5) + 1} ${location}, Xã Tà Hine, Tỉnh Lâm Đồng`,
     needs: Array.from({ length: Math.floor(Math.random() * 2) + 1 }, () => needsPool[Math.floor(Math.random() * needsPool.length)]),
     status,
     supporter,
